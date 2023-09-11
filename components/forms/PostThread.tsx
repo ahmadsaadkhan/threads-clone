@@ -3,29 +3,28 @@
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import * as z from "zod"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Textarea } from "@/components/ui/textarea";
 import { usePathname, useRouter } from "next/navigation";
+import { useOrganization } from "@clerk/nextjs";
 
-// import { updateUser } from "@/lib/actions/users.actions";
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions"
 
 const PostThread = ({ userId }: { userId: string }) => {
     const router = useRouter();
     const pathname = usePathname();
-
+    const organization: any = useOrganization();
+    
     const form = useForm({
         resolver: zodResolver(ThreadValidation),
         defaultValues: {
@@ -38,7 +37,7 @@ const PostThread = ({ userId }: { userId: string }) => {
         await createThread({
             text: values.thread,
             author: userId,
-            communityId: null,
+            communityId: organization ? organization.id : null,
             path: pathname
         });
         router.push("/");
