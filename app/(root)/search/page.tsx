@@ -15,7 +15,6 @@ const Page = async ({ searchParams }: { searchParams: { [key: string]: string | 
         pageNumber: 1,
         pageSize: 25
     });
-    //console.log('result', result);
 
     return(
         <section className="head-text mb-10">
